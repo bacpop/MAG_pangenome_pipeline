@@ -155,12 +155,12 @@ rule run_checkm:
     input:
         fixed_annotations = f"{config['output_dir']}/all_faa"
     output:
-        workdir = f"{config['output_dir']}/checkm_out",
+        workdir = directory(f"{config['output_dir']}/checkm_out"),
         outfile = f"{config['output_dir']}/checkm_out.txt"
     threads: 16
     resources:
         mem_mb=5000
     shell:
         """
-        checkm lineage_wf --genes -t {threads} -x faa --tab_table -f {output.outfile} {input.fixed_annotations} {output.workdir}
+        checkm lineage_wf -q --genes -t {threads} -x faa --tab_table -f {output.outfile} {input.fixed_annotations} {output.workdir}
         """

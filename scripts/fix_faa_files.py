@@ -10,7 +10,7 @@ def fix_faa_files(list_of_annotation_dirs, outputdir):
     except OSError:
         pass
     for ann_dirs in list_of_annotation_dirs:
-        file = glob.glob(ann_dirs + "/*.faa")[0] 
+        file = list(set(glob.glob(ann_dirs + "/*.faa")) - set(glob.glob(ann_dirs + "/*.hypotheticals.faa")))[0] 
         filename = file.split("/")[-1]
         filename = filename.replace(".faa", "")
         records = SeqIO.parse(file, "fasta")
