@@ -6,7 +6,8 @@ configfile: "config.yaml"
 rule all:
     input:
         matrix = f"{config['output_dir']}/presence_absence_matrix.txt",
-        summary_file = f"{config['output_dir']}/pangenome_summary.tsv"
+        summary_file = f"{config['output_dir']}/pangenome_summary.tsv",
+        outfile = f"{config['output_dir']}/checkm_out.txt"
 
 
 # if wanting to annotate MAGs with BAKTA
@@ -52,7 +53,7 @@ rule fix_ffn_file:
 
 rule concat:
     input:
-        ffn_files = directory(f"{config['output_dir']}/all_ffn")
+        ffn_files = f"{config['output_dir']}/all_ffn"
     output:
         f"{config['output_dir']}/all_samples.concat.ffn"
     shell:
@@ -152,7 +153,7 @@ rule fix_faa_file:
 
 rule run_checkm:
     input:
-        fixed_annotations = directory(f"{config['output_dir']}/all_faa")
+        fixed_annotations = f"{config['output_dir']}/all_faa"
     output:
         workdir = f"{config['output_dir']}/checkm_out",
         outfile = f"{config['output_dir']}/checkm_out.txt"
