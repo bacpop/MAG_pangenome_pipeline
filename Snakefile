@@ -8,7 +8,7 @@ rule all:
         matrix = f"{config['output_dir']}/presence_absence_matrix.txt",
         summary_file = f"{config['output_dir']}/pangenome_summary.tsv",
         checkm_file = f"{config['output_dir']}/checkm_out.tsv",
-        final_file = f"{config['output_dir']}/final.txt"
+        cgt_output = f"{config['output_dir']}/cgt_output.txt"
 
 # if wanting to annotate MAGs with BAKTA
 rule bakta:
@@ -173,7 +173,7 @@ rule run_cgt:
         matrix= f"{config['output_dir']}/presence_absence_matrix.txt",
 	checkm_file = f"{config['output_dir']}/checkm_out.tsv"	
     output:
-        final_file = f"{config['output_dir']}/final.txt"
+        cgt_output = f"{config['output_dir']}/cgt_output.txt"
     threads: 1
     params:
         exe = f"{config['cgt_exe']}",
@@ -183,6 +183,5 @@ rule run_cgt:
         mem_mb=5000
     shell:
         """
-	{params.exe} {input.checkm_file} 11 {input.matrix} {params.breaks} {params.error}
-	touch {output.final_file}
+	{params.exe} {input.checkm_file} 11 {input.matrix} {params.breaks} {params.error} > {output.cgt_output}
 	"""
