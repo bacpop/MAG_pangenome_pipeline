@@ -7,8 +7,8 @@ rule all:
     input:
         matrix = f"{config['output_dir']}/presence_absence_matrix.txt",
         summary_file = f"{config['output_dir']}/pangenome_summary.tsv",
-        outfile = f"{config['output_dir']}/checkm_out.tsv"
-
+        checkm_file = f"{config['output_dir']}/checkm_out.tsv",
+        final_file = f"{config['output_dir']}/final.txt"
 
 # if wanting to annotate MAGs with BAKTA
 rule bakta:
@@ -156,13 +156,33 @@ rule run_checkm:
         fixed_annotations = f"{config['output_dir']}/all_faa"
     output:
         workdir = directory(f"{config['output_dir']}/checkm_out"),
-        outfile = f"{config['output_dir']}/checkm_out.tsv"
+        checkm_file = f"{config['output_dir']}/checkm_out.tsv"
     threads: 16
     resources:
         mem_mb=5000
     shell:
         """
-        checkm lineage_wf -q --genes -t {threads} -x faa --tab_table -f {output.outfile} {input.fixed_annotations} {output.workdir}
-        sed 's/# //g' -i {output.outfile}
-        sed 's/ /_/g' -i {output.outfile}
+        checkm lineage_wf -q --genes -t {threads} -x faa --tab_table -f {output.checkm_file} {input.fixed_annotations} {output.workdir}
+        sed 's/# //g' -i {output.checkm_file}
+        sed 's/ /_/g' -i {output.checkm_file}
+	"""
+
+# cgt analysis
+rule run_cgt:
+    input:
+        matrix= f"{config['output_dir']}/presence_absence_matrix.txt",
+	checkm_file = f"{config['output_dir']}/checkm_out.tsv"	
+    output:
+        final_file = f"{config['output_dir']}/final.txt"
+    threads: 1
+    params:
+        exe = f"{config['cgt_exe']}",
+        breaks = f"{config['cgt_breaks']}",
+        error = f"{config['cgt_error']}"
+    resources:
+        mem_mb=5000
+    shell:
+        """
+	{params.exe} {input.checkm_file} 11 {input.matrix} {params.breaks} {params.error}
+	touch {output.final_file}
 	"""

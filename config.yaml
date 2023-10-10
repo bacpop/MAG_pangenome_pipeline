@@ -1,5 +1,5 @@
 ### Core vs. accessory cutoff (percentage):
-core: 0.8
+core: 0.9
 
 ### Required for both workflows:
 
@@ -13,3 +13,8 @@ genome_fasta: /media/mirrored-hdd/shorsfield/jobs/Celebrimbor/fastas
 
 # path to bakta DB:
 bakta_db: /media/mirrored-hdd/shorsfield/jobs/Celebrimbor/db-light
+
+# cgt executable parameters
+cgt_exe: /home/shorsfield/software/cgt/rust/target/release/cgt_rust
+cgt_breaks: 0.1,0.9
+cgt_error: 0.05
