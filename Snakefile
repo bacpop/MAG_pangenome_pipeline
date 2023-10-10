@@ -7,7 +7,7 @@ rule all:
     input:
         matrix = f"{config['output_dir']}/presence_absence_matrix.txt",
         summary_file = f"{config['output_dir']}/pangenome_summary.tsv",
-        outfile = f"{config['output_dir']}/checkm_out.txt"
+        outfile = f"{config['output_dir']}/checkm_out.tsv"
 
 
 # if wanting to annotate MAGs with BAKTA
@@ -163,4 +163,5 @@ rule run_checkm:
     shell:
         """
         checkm lineage_wf -q --genes -t {threads} -x faa --tab_table -f {output.outfile} {input.fixed_annotations} {output.workdir}
-        """
+        sed 's/# //g' -i {output.outfile}
+	"""
