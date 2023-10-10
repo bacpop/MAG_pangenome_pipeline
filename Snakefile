@@ -164,4 +164,5 @@ rule run_checkm:
         """
         checkm lineage_wf -q --genes -t {threads} -x faa --tab_table -f {output.outfile} {input.fixed_annotations} {output.workdir}
         sed 's/# //g' -i {output.outfile}
+        sed 's/ /_/g' -i {output.outfile}
 	"""
