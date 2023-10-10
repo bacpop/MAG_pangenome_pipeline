@@ -11,9 +11,10 @@ matrix = sys.argv[3]
 outputfile = sys.argv[4]
 
 # import matrix as pandas df
-gene_matrixDf = pd.read_csv(matrix, sep=',', header=0, index_col=0)
-genes = (list(gene_matrixDf)[0:])
-MAG_list = gene_matrixDf.index.to_list()
+gene_matrixDf = pd.read_csv(matrix, sep='\t', header=0, index_col=0)
+n_MAG = len(gene_matrixDf.columns)
+#gene_matrixDf = gene_matrixDf.T
+#genes = (list(gene_matrixDf)[0:])
 
 # put gene descriptions in dictionary:
 gene_description_dictionary = {}
@@ -25,10 +26,10 @@ with open(gene_desc, "r") as desc_in:
         description = "_".join(description)
         gene_description_dictionary[gene_name] = description
 
-for gene in genes:
+for gene, row in gene_matrixDf.iterrows():
     # sum number of MAGs the gene appears in:
-    count = gene_matrixDf[gene].sum()
-    prevalence = float(count) / float(len(MAG_list))
+    count = row.sum()
+    prevalence = float(count) / float(n_MAG)
     if prevalence >= core_perc:
         pan_type = "core"
     else:

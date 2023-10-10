@@ -156,7 +156,7 @@ rule run_checkm:
         fixed_annotations = f"{config['output_dir']}/all_faa"
     output:
         workdir = directory(f"{config['output_dir']}/checkm_out"),
-        outfile = f"{config['output_dir']}/checkm_out.txt"
+        outfile = f"{config['output_dir']}/checkm_out.tsv"
     threads: 16
     resources:
         mem_mb=5000

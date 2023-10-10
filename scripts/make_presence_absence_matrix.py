@@ -22,7 +22,8 @@ def make_presence_absence_matrix(adjacency_file, representative_sequences, outpu
     matrixDf = matrixDf.reindex(sorted(matrixDf.columns), axis=1)
     matrixDf = matrixDf.sort_index()
     matrixDf.fillna(0, inplace=True)
-    matrixDf.to_csv(outputfilename, sep=',')
+    matrixDf = matrixDf.T.astype(int)
+    matrixDf.to_csv(outputfilename, sep='\t', index_label = "Gene")
 
 
 make_presence_absence_matrix(snakemake.input.clusters, snakemake.input.rep_list, snakemake.output.matrix)

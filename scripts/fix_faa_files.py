@@ -14,7 +14,7 @@ def fix_faa_files(list_of_annotation_dirs, outputdir):
         filename = file.split("/")[-1]
         filename = filename.replace(".faa", "")
         records = SeqIO.parse(file, "fasta")
-        outfilename = outputdir + "/" + filename + "_fixed.faa"
+        outfilename = outputdir + "/" + filename + ".faa"
         all_records = []
         for record in records:
             desc = record.description.split("_", 1)[1]
