@@ -9,12 +9,6 @@ rule all:
         summary_file = f"{config['output_dir']}/pangenome_summary.tsv"
 
 
-if config["BAKTA"]["exec"] and config["GFF"]["exec"]:
-    print("cannot have BAKTA and GFF true in config file")
-    exit(1)
-
-print(config["BAKTA"]["exec"])
-
 # if wanting to annotate MAGs with BAKTA
 rule bakta:
         input:
@@ -27,7 +21,6 @@ rule bakta:
         resources:
             mem_mb=lambda wildcards, attempt: attempt * 15000
         params:
-            trn = config['training_file'],
             DB = directory(f"{config['bakta_db']}")
         log:
             f"{config['output_dir']}/logs/bakta/{{sample}}.log"
@@ -146,3 +139,27 @@ rule summarise_pangenome:
         python scripts/summarise_pangenome.py {params.core} {output.gene_descriptions} {input.matrix} {output.summary_file}
         """
 
+# checkm analysis
+rule fix_faa_file:
+        input:
+            annotations = expand(f"{config['output_dir']}/annotated/{{sample}}_ann", sample=get_samples(config['genome_fasta']))
+        output:
+            fixed_annotations = directory(f"{config['output_dir']}/all_faa")
+        conda: #just needs biopython
+            "Snakemake"
+        script: "scripts/fix_faa_files.py"
+
+
+rule run_checkm:
+    input:
+        fixed_annotations = directory(f"{config['output_dir']}/all_faa")
+    output:
+        workdir = f"{config['output_dir']}/checkm_out",
+        outfile = f"{config['output_dir']}/checkm_out.txt"
+    threads: 16
+    resources:
+        mem_mb=5000
+    shell:
+        """
+        checkm lineage_wf --genes -t {threads} -x faa --tab_table -f {output.outfile} {input.fixed_annotations} {output.workdir}
+        """

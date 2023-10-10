@@ -1,34 +1,15 @@
-### BAKTA workflow:
-BAKTA:
-  exec : True
-
-### GFF workflow:
-GFF:
-  exec : False
-
 ### Core vs. accessory cutoff (percentage):
 core: 0.8
 
 ### Required for both workflows:
 
 # output dir
-output_dir: /home/shorsfield/Celebrimbor/test_results
-
+output_dir: /media/mirrored-hdd/shorsfield/jobs/Celebrimbor/test_results
 
 ### Required for BAKTA workflow:
 
 # dir with genome fasta files
-genome_fasta: /home/shorsfield/Celebrimbor/fastas/
-
-# training file
-training_file: path/to/training/file/training.trn
+genome_fasta: /media/mirrored-hdd/shorsfield/jobs/Celebrimbor/fastas
 
 # path to bakta DB:
-bakta_db: /home/shorsfield/Celebrimbor/db-light
-
-
-### Required for GFF workflow:
-
-# dir with GFF files:
-gff_dir: /path/to/dir/with/GFF/files/{gff extension}
-
+bakta_db: /media/mirrored-hdd/shorsfield/jobs/Celebrimbor/db-light
