@@ -49,7 +49,7 @@ cargo build --release
 Update `config.yaml` to specify workflow and directory paths. 
 - `core`: gene frequency cutoff for core gene, anything above this frequency is annotated as a core gene.
 - `output_dir`: path to output directory. Does not need to exist prior to running.
-- `genome_fasta`: path to directory containing fasta files (must have either `.fa` or `.fasta` extension).
+- `genome_fasta`: path to directory containing fasta files (must have `.fasta` extension).
 - `bakta_db`: path to bakta db downloaded above.
 - `cgt_exe`: path to cgt executable. Relative path will be `cgt/target/release/cgt_rust`.
 - `cgt_breaks`: frequency for rare/core gene cutoff, e.g. `0.1,0.9`, meaning genes predicted at `<0.1` frequency will be `rare`, `0.1<=x<0.9` will be `middle` and `>=0.9` will be `core`.

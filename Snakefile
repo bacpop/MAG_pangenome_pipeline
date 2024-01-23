@@ -1,6 +1,7 @@
 import glob
 
 configfile: "config.yaml"
+extensions = ["fa", "fasta"]
 
 
 rule all:
@@ -10,7 +11,6 @@ rule all:
         checkm_file = f"{config['output_dir']}/checkm_out.tsv",
         cgt_output = f"{config['output_dir']}/cgt_output.txt"
 
-# if wanting to annotate MAGs with BAKTA
 rule bakta:
         input:
             genome = f"{config['genome_fasta']}/{{sample}}.fasta"
@@ -28,7 +28,7 @@ rule bakta:
         shell:
             """
             bakta {input.genome} --db {params.DB} --prefix {wildcards.sample} \
-             --translation-table 11 --skip-trna --skip-tmrna --skip-rrna --skip-ncrna --skip-ncrna-region --skip-crispr --skip-ori --skip-plot  --threads {threads} --output {output.ann_dir} >{log} 2>&1
+             --translation-table 11 --skip-trna --skip-tmrna --skip-rrna --skip-ncrna --skip-ncrna-region --skip-crispr --skip-ori --threads {threads} --output {output.ann_dir} >{log} 2>&1
             """
 
 
@@ -170,8 +170,8 @@ rule run_checkm:
 # cgt analysis
 rule run_cgt:
     input:
-        matrix= f"{config['output_dir']}/presence_absence_matrix.txt",
-	checkm_file = f"{config['output_dir']}/checkm_out.tsv"	
+        lematrix= f"{config['output_dir']}/presence_absence_matrix.txt",
+        checkm_file = f"{config['output_dir']}/checkm_out.tsv"	
     output:
         cgt_output = f"{config['output_dir']}/cgt_output.txt"
     threads: 1
