@@ -4,20 +4,22 @@ A pipeline written in Snakemake to automatically generate pangenomes from metage
 
 ## Dependencies: 
 
-* Snakemake (to get Snakemake to work with LSF click [here](https://github.com/Snakemake-Profiles/lsf#install))
+* Snakemake
 * mmseqs2
-* Bakta (if running annotation)
+* Bakta
 * Biopython
-* BCBio
+* CheckM
 * Pandas
+* Rust
 
 **NOTE:** Conda is used to call different environments and dependencies (see Snakemake file).
 
 ## To install:
 
-Install the required packages using [conda]/[mamba]:
+Install the required packages using [conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html)/[mamba](https://github.com/mamba-org/mamba):
 
 ```
+git clone https://github.com/bacpop/MAG_pangenome_pipeline.git
 mamba env create -f environment.yml
 mamba activate celebrimbor
 ```
