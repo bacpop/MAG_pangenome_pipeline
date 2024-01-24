@@ -17,7 +17,7 @@ rule bakta:
         output:
             ann_dir = directory(f"{config['output_dir']}/annotated/{{sample}}_ann")
         conda:
-            "bakta"
+            "celebrimbor"
         threads: 1
         resources:
             mem_mb=lambda wildcards, attempt: attempt * 15000
@@ -28,7 +28,7 @@ rule bakta:
         shell:
             """
             bakta {input.genome} --db {params.DB} --prefix {wildcards.sample} \
-             --translation-table 11 --skip-trna --skip-tmrna --skip-rrna --skip-ncrna --skip-ncrna-region --skip-crispr --skip-ori --threads {threads} --output {output.ann_dir} >{log} 2>&1
+             --translation-table 11 --skip-plot --skip-trna --skip-tmrna --skip-rrna --skip-ncrna --skip-ncrna-region --skip-crispr --skip-ori --threads {threads} --output {output.ann_dir} >{log} 2>&1
             """
 
 
@@ -48,7 +48,7 @@ rule fix_ffn_file:
         output:
             fixed_annotations = directory(f"{config['output_dir']}/all_ffn")
         conda: #just needs biopython
-            "Snakemake"
+            "celebrimbor"
         script: "scripts/fix_ffn_files.py"
 
 rule concat:
@@ -78,7 +78,7 @@ rule mmseqs2:
         output_prefix = f"{config['output_dir']}/mmseqs/mmseqs",
         tmp_dir = f"{config['output_dir']}/mmseqs/tmp"
     conda:
-        "mmseq2"
+        "celebrimbor"
     shell:
         "mmseqs easy-cluster {input} {params.output_prefix} {params.tmp_dir} --min-seq-id {params.seq_id} \
         --cov-mode {params.cov_mode} -c {params.c} --threads {threads} >{log} 2>&1"
@@ -115,7 +115,7 @@ rule build_matrix:
         mem_mb=5000
     conda:
         # env has biopython and pandas
-        "poppunk"
+        "celebrimbor"
     script: "scripts/make_presence_absence_matrix.py"
 
 
@@ -133,7 +133,7 @@ rule summarise_pangenome:
         core = config['core']
     conda:
         # env has biopython and pandas
-        "poppunk"
+        "celebrimbor"
     shell:
         """
         grep ">" {input.rep_seq} > {output.gene_descriptions}
@@ -147,7 +147,7 @@ rule fix_faa_file:
         output:
             fixed_annotations = directory(f"{config['output_dir']}/all_faa")
         conda: #just needs biopython
-            "Snakemake"
+            "celebrimbor"
         script: "scripts/fix_faa_files.py"
 
 
@@ -170,7 +170,7 @@ rule run_checkm:
 # cgt analysis
 rule run_cgt:
     input:
-        lematrix= f"{config['output_dir']}/presence_absence_matrix.txt",
+        matrix= f"{config['output_dir']}/presence_absence_matrix.txt",
         checkm_file = f"{config['output_dir']}/checkm_out.tsv"	
     output:
         cgt_output = f"{config['output_dir']}/cgt_output.txt"
@@ -183,5 +183,5 @@ rule run_cgt:
         mem_mb=5000
     shell:
         """
-	{params.exe} {input.checkm_file} 11 {input.matrix} {params.breaks} {params.error} > {output.cgt_output}
+        {params.exe} --completeness-column 11 --breaks {params.breaks} --error {params.error} --output-file {output.cgt_output} {input.checkm_file} {input.matrix}
 	"""
