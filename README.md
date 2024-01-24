@@ -20,6 +20,7 @@ Install the required packages using [conda](https://conda.io/projects/conda/en/l
 
 ```
 git clone https://github.com/bacpop/MAG_pangenome_pipeline.git
+cd MAG_pangenome_pipeline
 mamba env create -f environment.yml
 mamba activate celebrimbor
 ```
@@ -51,7 +52,7 @@ Update `config.yaml` to specify workflow and directory paths.
 - `output_dir`: path to output directory. Does not need to exist prior to running.
 - `genome_fasta`: path to directory containing fasta files (must have `.fasta` extension).
 - `bakta_db`: path to bakta db downloaded above.
-- `cgt_exe`: path to cgt executable. Relative path will be `cgt/target/release/cgt_rust`.
+- `cgt_exe`: path to cgt executable. Relative path will be `cgt/target/release/cgt_bacpop`.
 - `cgt_breaks`: frequency for rare/core gene cutoff, e.g. `0.1,0.9`, meaning genes predicted at `<0.1` frequency will be `rare`, `0.1<=x<0.9` will be `middle` and `>=0.9` will be `core`.
 - `cgt_error`: sets false assignment rate of gene to particular frequency compartment.
 
