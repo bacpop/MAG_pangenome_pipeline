@@ -182,5 +182,5 @@ rule run_cgt:
         mem_mb=5000
     shell:
         """
-        {params.exe} --completeness-column 11 --breaks {params.breaks} --error {params.error} --output-file {output.cgt_output} {input.checkm_file} {input.matrix}
+        {params.exe} --completeness-column 12 --breaks {params.breaks} --error {params.error} --output-file {output.cgt_output} {input.checkm_file} {input.matrix}
 	"""
