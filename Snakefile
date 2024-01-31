@@ -106,7 +106,6 @@ rule sort_mmseqs2_clusters:
 
 rule build_matrix:
     input:
-        rep_list = f"{config['output_dir']}/mmseqs/rep_sequences.list",
         clusters = f"{config['output_dir']}/mmseqs/mmseqs_cluster.sorted.tsv"
     output:
         matrix = f"{config['output_dir']}/presence_absence_matrix.txt"
@@ -159,7 +158,7 @@ rule run_checkm:
         checkm_file = f"{config['output_dir']}/checkm_out.tsv"
     threads: 16
     resources:
-        mem_mb=5000
+        mem_mb=lambda wildcards, attempt: 16000 * attempt
     shell:
         """
         checkm lineage_wf -q --genes -t {threads} -x faa --tab_table -f {output.checkm_file} {input.fixed_annotations} {output.workdir}
