@@ -5,7 +5,9 @@ script to summarise pangenomes
 import sys
 import pandas as pd
 
-core_perc = float(sys.argv[1])
+breaks = sys.argv[1]
+rare_perc = float(breaks.split(",")[0])
+core_perc = float(breaks.split(",")[1])
 gene_desc = sys.argv[2]
 matrix = sys.argv[3]
 outputfile = sys.argv[4]
@@ -30,10 +32,12 @@ for gene, row in gene_matrixDf.iterrows():
     # sum number of MAGs the gene appears in:
     count = row.sum()
     prevalence = float(count) / float(n_MAG)
+    pan_type = "rare"
     if prevalence >= core_perc:
         pan_type = "core"
     else:
-        pan_type = "accessory"
+        if prevalence >= rare_perc:
+            pan_type = "middle"
     with open(outputfile, "a") as fout:
         fout.write("%s\t%s\t%s\t%s\n" % (gene, gene_description_dictionary[gene], prevalence, pan_type))
 

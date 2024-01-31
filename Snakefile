@@ -129,14 +129,14 @@ rule summarise_pangenome:
     resources:
         mem_mb=5000
     params:
-        core = config['core']
+        breaks = config['cgt_breaks']
     conda:
         # env has biopython and pandas
         "celebrimbor"
     shell:
         """
         grep ">" {input.rep_seq} > {output.gene_descriptions}
-        python scripts/summarise_pangenome.py {params.core} {output.gene_descriptions} {input.matrix} {output.summary_file}
+        python scripts/summarise_pangenome.py {params.breaks} {output.gene_descriptions} {input.matrix} {output.summary_file}
         """
 
 # checkm analysis
