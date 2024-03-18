@@ -59,7 +59,7 @@ Update `config.yaml` to specify workflow and directory paths.
 Run snakemake (must be in same directory as `Snakemake` file):
 
 ```
-snakemake -n <cores>
+snakemake --cores <cores>
 ```
 
 ## Overview of workflow

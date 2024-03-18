@@ -13,5 +13,7 @@ cgt_breaks: 0.1,0.95
 cgt_error: 0.05
 
 # choice of clustering method, either 'mmseqs2' or 'panaroo'
-clustering_method: mmseqs2/panaroo
+clustering_method: "panaroo"
+
+# must be one of 'strict', 'moderate' or 'sensitive'
 panaroo_stringency: "strict"
