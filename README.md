@@ -11,6 +11,7 @@ A pipeline written in Snakemake to automatically generate pangenomes from metage
 * CheckM
 * Pandas
 * Rust
+* Panaroo
 
 **NOTE:** Conda is used to call different environments and dependencies (see Snakemake file).
 

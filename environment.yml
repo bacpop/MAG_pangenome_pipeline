@@ -11,4 +11,5 @@ dependencies:
   - biopython
   - checkm-genome
   - snakemake
+  - panaroo
   - rust
