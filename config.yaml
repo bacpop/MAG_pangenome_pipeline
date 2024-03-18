@@ -1,20 +1,17 @@
-### Core vs. accessory cutoff (percentage):
-core: 0.9
+#output directory
+output_dir: /path/to/output/dir
 
-### Required for both workflows:
-
-# output dir
-output_dir: /media/mirrored-hdd/shorsfield/jobs/Celebrimbor/test_results
-
-### Required for BAKTA workflow:
-
-# dir with genome fasta files
-genome_fasta: /media/mirrored-hdd/shorsfield/jobs/Celebrimbor/fastas
+# dir with genome fasta files, must have '.fasta' extension, to convert use 'rename .fa .fasta  *.fa' (e.g. if extensions are .fa)
+genome_fasta: /path/to/genome/fasta/dir
 
 # path to bakta DB:
-bakta_db: /media/mirrored-hdd/shorsfield/jobs/Celebrimbor/db-light
+bakta_db: path/to/bakta/db/dir
 
 # cgt executable parameters
-cgt_exe: /home/shorsfield/software/cgt/rust/target/release/cgt_rust
-cgt_breaks: 0.1,0.9
+cgt_exe: /path/to/cgt/exe
+cgt_breaks: 0.1,0.95
 cgt_error: 0.05
+
+# choice of clustering method, either 'mmseqs2' or 'panaroo'
+clustering_method: mmseqs2/panaroo
+panaroo_stringency: "strict"

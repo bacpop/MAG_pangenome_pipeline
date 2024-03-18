@@ -31,7 +31,6 @@ rule bakta:
              --translation-table 11 --skip-plot --skip-trna --skip-tmrna --skip-rrna --skip-ncrna --skip-ncrna-region --skip-crispr --skip-ori --threads {threads} --output {output.ann_dir} >{log} 2>&1
             """
 
-
 def get_samples(genome_dir):
         list_of_samples = glob.glob(genome_dir + "/*.fasta")
         new_list_of_samples = []
@@ -40,7 +39,6 @@ def get_samples(genome_dir):
             sam = sam.replace(".fasta", "")
             new_list_of_samples.append(sam)
         return new_list_of_samples
-
 
 rule fix_ffn_file:
         input:
@@ -83,7 +81,6 @@ rule mmseqs2:
         "mmseqs easy-cluster {input} {params.output_prefix} {params.tmp_dir} --min-seq-id {params.seq_id} \
         --cov-mode {params.cov_mode} -c {params.c} --threads {threads} >{log} 2>&1"
 
-
 rule rep_seq_list:
     input:
         f"{config['output_dir']}/mmseqs/mmseqs_rep_seq.fasta"
@@ -103,8 +100,32 @@ rule sort_mmseqs2_clusters:
         mem_mb=2000
     shell: "sort {input.clusters} > {output.sorted_clusters}"
 
+rule symlink:
+        input:
+            annotations = expand(f"{config['output_dir']}/annotated/{{sample}}_ann", sample=get_samples(config['genome_fasta']))
+            file_ext = "gff3"
+        output:
+            outputdir = directory(f"{config['output_dir']}/all_gff")
+        conda: #just needs biopython
+            "celebrimbor"
+        script: "scripts/create_symlink.py"
 
-rule build_matrix:
+rule panaroo:
+    input:
+        directory(f"{config['output_dir']}/all_gff")
+    output:
+        summary_stats = f"{config['output_dir']}/panaroo/summary_statistics.txt"
+    threads: 16
+    resources:
+        mem_mb=lambda wildcards, attempt: 16000 * attempt
+    params:
+        stringency = config['panaroo_stringency']
+    conda:
+        "celebrimbor"
+    shell:
+        "panaroo -i {input}/*.gff3 -o panaroo --clean-mode {params.stringency} --remove-invalid-genes -t {threads}"
+
+rule build_matrix_mmseqs:
     input:
         clusters = f"{config['output_dir']}/mmseqs/mmseqs_cluster.sorted.tsv"
     output:
@@ -117,14 +138,13 @@ rule build_matrix:
         "celebrimbor"
     script: "scripts/make_presence_absence_matrix.py"
 
-
-rule summarise_pangenome:
+rule summarise_pangenome_mmseqs:
     input:
         rep_seq = f"{config['output_dir']}/mmseqs/mmseqs_rep_seq.fasta",
         matrix= f"{config['output_dir']}/presence_absence_matrix.txt"
     output:
         gene_descriptions = f"{config['output_dir']}/mmseqs/rep_seq_descriptions.txt",
-        summary_file = f"{config['output_dir']}/pangenome_summary.tsv"
+        summary_file = f"{config['output_dir']}/pangenome_summary_mmseqs.tsv"
     threads: 1
     resources:
         mem_mb=5000
@@ -136,7 +156,25 @@ rule summarise_pangenome:
     shell:
         """
         grep ">" {input.rep_seq} > {output.gene_descriptions}
-        python scripts/summarise_pangenome.py {params.breaks} {output.gene_descriptions} {input.matrix} {output.summary_file}
+        python scripts/summarise_pangenome_mmseqs.py {params.breaks} {output.gene_descriptions} {input.matrix} {output.summary_file}
+        """
+
+rule summarise_pangenome_panaroo:
+    input:
+        matrix= f"{config['output_dir']}/panaroo/gene_presence_absence.Rtab"
+    output:
+        summary_file = f"{config['output_dir']}/pangenome_summary_panaroo.tsv"
+    threads: 1
+    resources:
+        mem_mb=5000
+    params:
+        breaks = config['cgt_breaks']
+    conda:
+        # env has biopython and pandas
+        "celebrimbor"
+    shell:
+        """
+        python scripts/summarise_pangenome_panaroo.py {params.breaks} {input.matrix} {output.summary_file}
         """
 
 # checkm analysis
