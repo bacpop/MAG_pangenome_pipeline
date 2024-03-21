@@ -156,7 +156,7 @@ if (to_analyse == "rare")
   
   all_rare_p <- ggplot(data=subsample.df.all.rare, aes(x=rare_lim, y=value, colour=variable)) + facet_grid(type~., switch = "y", scales = "free_y") + geom_point(size=2) + geom_line() + theme_light() + xlab("Rare threshold") + ylab("") + theme(axis.text.x = element_text(size = 14), axis.text.y = element_text(size = 14), axis.title=element_text(size=16,face="bold"), strip.placement = "outside", strip.background = element_blank(), strip.text.x = element_text(size = 14), strip.text.y = element_text(size = 14, colour = "black", face = "bold"), legend.title=element_text(size=18,face="bold"), legend.text=element_text(size=16)) + guides(colour=guide_legend(title="Method")) + scale_colour_npg() + scale_y_continuous(breaks = seq(0, 100000, 2000))
   all_rare_p
-  write.csv(print.df, file='cgt_rare.csv')
+  write.csv(print.df, file='mmseqs_rare.csv')
 } else if (to_analyse == "core")
 {
   subsample.df.core <- subset(subsample.df, variable == "cgt_core_true_diff" | variable == "pred_core_true_diff")
@@ -196,7 +196,7 @@ if (to_analyse == "rare")
   all_core_p <- ggplot(data=subsample.df.all.core, aes(x=core_lim, y=value, colour=variable)) + facet_grid(type~., switch = "y", scales = "free_y") + geom_point(size=2) + geom_line() + theme_light() + xlab("Core threshold") + ylab("") + theme(axis.text.x = element_text(size = 14), axis.text.y = element_text(size = 14), axis.title=element_text(size=16,face="bold"), strip.placement = "outside", strip.background = element_blank(), strip.text.x = element_text(size = 14), strip.text.y = element_text(size = 14, colour = "black", face = "bold"), legend.title=element_text(size=18,face="bold"), legend.text=element_text(size=16)) + guides(colour=guide_legend(title="Method")) + scale_colour_npg() + scale_y_continuous(breaks = seq(0, 100000, 1000))
   all_core_p
   
-  write.csv(print.df, file='cgt_core.csv')
+  write.csv(print.df, file='mmseqs_core.csv')
 }
 
 grid.plot <- ggarrange(all_core_p, all_rare_p, align="hv", ncol = 2, common.legend = TRUE, legend="right", labels="AUTO")

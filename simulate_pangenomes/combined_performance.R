@@ -10,10 +10,10 @@ panaroo.stringency <- "strict"
 
 # read in dfs generated from mmseqs2_performance.R and panaroo_performance.R
 {
-  cgt.rare.df <- read.csv("cgt_rare.csv")
+  cgt.rare.df <- read.csv("mmseqs_rare.csv")
   cgt.rare.df$analysis <- "CGT"
   
-  cgt.core.df <- read.csv("cgt_core.csv")
+  cgt.core.df <- read.csv("mmseqs_core.csv")
   cgt.core.df$analysis <- "CGT"
   
   panaroo.rare.df <- read.csv("panaroo_rare.csv")
