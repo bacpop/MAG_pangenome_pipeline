@@ -1,8 +1,8 @@
-# MAG_pangenome_pipeline
+# CELEBRIMBOR <img src='celebrimbor_logo.png' align="right" height="250" />
 
-A pipeline written in Snakemake to automatically generate pangenomes from metagenome assembled genomes (MAGs). 
+A pipeline written in Snakemake to automatically generate pangenomes from metagenome assembled genomes (MAGs).
 
-## Dependencies: 
+## Dependencies:
 
 * Snakemake
 * mmseqs2
@@ -10,7 +10,7 @@ A pipeline written in Snakemake to automatically generate pangenomes from metage
 * Biopython
 * CheckM
 * Pandas
-* Rust
+* Rust toolchain
 * Panaroo
 
 **NOTE:** Conda is used to call different environments and dependencies (see Snakemake file).
@@ -39,21 +39,25 @@ bakta_db download --output /path/to/database --type light
 ```
 
 Install [cgt](https://github.com/bacpop/cgt)
+```
+cargo add cgt_bacpop
+```
 
+Or to build from source:
 ```
 git clone https://github.com/bacpop/cgt.git
 cd cgt
-cargo build --release
+cargo install --path "."
 ```
 
-## Quick start: 
+## Quick start:
 
-Update `config.yaml` to specify workflow and directory paths. 
+Update `config.yaml` to specify workflow and directory paths.
 - `core`: gene frequency cutoff for core gene, anything above this frequency is annotated as a core gene.
 - `output_dir`: path to output directory. Does not need to exist prior to running.
 - `genome_fasta`: path to directory containing fasta files (must have `.fasta` extension).
 - `bakta_db`: path to bakta db downloaded above.
-- `cgt_exe`: path to cgt executable. Relative path will be `cgt/target/release/cgt_bacpop`.
+- `cgt_exe`: path to cgt executable.
 - `cgt_breaks`: frequency for rare/core gene cutoff, e.g. `0.1,0.9`, meaning genes predicted at `<0.1` frequency will be `rare`, `0.1<=x<0.9` will be `middle` and `>=0.9` will be `core`.
 - `cgt_error`: sets false assignment rate of gene to particular frequency compartment.
 
