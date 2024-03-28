@@ -64,9 +64,9 @@ WORKDIR $PROJECT_DIR
 ENV ENV_PREFIX $PROJECT_DIR/env
 RUN conda update --name base --channel defaults conda && \
     conda env create --prefix $ENV_PREFIX --file /tmp/environment.yml --yes && \
-    conda clean --all --yes \
-    conda activate celebrimbor \
-    cargo install cgt_bacpop \
+    conda clean --all --yes && \
+    conda activate celebrimbor && \
+    cargo install cgt_bacpop && \
     conda deactivate
 
 # add rust binary to path
