@@ -38,9 +38,9 @@ You can also use the light bakta database if using a suitable version of bakta:
 bakta_db download --output /path/to/database --type light
 ```
 
-Install [cgt](https://github.com/bacpop/cgt)
+Install [cgt](https://github.com/bacpop/cgt) (will install `cgt_bacpop` executable in `./bin` directory)
 ```
-cargo add cgt_bacpop
+cargo install cgt_bacpop --root .
 ```
 
 Or to build from source:
