@@ -69,7 +69,7 @@ RUN conda update --name base --channel defaults conda && \
     cargo install cgt_bacpop --root .
 
 # copy cgt executable to root bin
-COPY ./bin/cgt_bacpop /usr/local/bin/
+COPY cgt_bacpop /usr/local/bin/
 
 # use an entrypoint script to insure conda environment is properly activated at runtime
 USER root
