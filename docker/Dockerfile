@@ -1,7 +1,7 @@
 # From https://github.com/kaust-vislab/python-data-science-project
 FROM ubuntu:20.04
 
-LABEL maintainer="samhorsfield96 <shorsfield@ebi.ac.uk>"
+LABEL maintainer="Sam Horsfield <shorsfield@ebi.ac.uk>"
 
 SHELL [ "/bin/bash", "--login", "-c" ]
 
@@ -66,10 +66,10 @@ RUN conda update --name base --channel defaults conda && \
     conda env create --prefix $ENV_PREFIX --file /tmp/environment.yml --force && \
     conda clean --all --yes \
     conda activate celebrimbor \
-    cargo install cgt_bacpop --root .
+    cargo install cgt_bacpop
 
-# copy cgt executable to root bin
-COPY cgt_bacpop /usr/local/bin/
+# add rust binary to path
+ENV PATH="$HOME/.cargo/bin:${PATH}"
 
 # use an entrypoint script to insure conda environment is properly activated at runtime
 USER root
