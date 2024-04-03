@@ -55,8 +55,15 @@ cargo install --path "."
 An alternative, if you are having trouble with the above, is to use the CELEBRIMBOR docker
 container. If you are comfortable running commands inside docker containers and mounting
 your external files, the whole pipeline is in the container available by running:
+
 ```
 docker pull samhorsfield96/celebrimbor:main
+```
+
+To run within the container, use the below command, replacing `path to output dir` and `path to fasta dir` with absolute paths:
+
+```
+docker run -v <path to output dir>:/output -v <path to fasta dir>:/data samhorsfield96/celebrimbor:main snakemake --cores 4 --config genome_fasta=/data output_dir=/output bakta_db=bakta_db/db-light cgt_exe=cgt_bacpop cgt_breaks=0.05,0.95 cgt_error=0.06 clustering_method=panaroo panaroo_stringency=moderate
 ```
 
 ## Quick start:
