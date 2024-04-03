@@ -67,6 +67,8 @@ RUN conda update --name base --channel defaults conda && \
     conda clean --all --yes && \
     conda activate $ENV_PREFIX && \
     cargo install cgt_bacpop && \
+    mkdir bakta_db && \ 
+    bakta_db download --output bakta_db && \
     conda deactivate
 
 # add rust binary to path
