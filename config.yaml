@@ -9,11 +9,11 @@ bakta_db: path/to/bakta/db/dir
 
 # cgt executable parameters
 cgt_exe: /path/to/cgt/exe
-cgt_breaks: 0.1,0.95
+cgt_breaks: 0.05,0.95
 cgt_error: 0.05
 
-# choice of clustering method, either 'mmseqs2' or 'panaroo'
+# choice of clustering method, either "mmseqs2" or "panaroo"
 clustering_method: "panaroo"
 
-# must be one of 'strict', 'moderate' or 'sensitive'
+# must be one of "strict", "moderate" or "sensitive"
 panaroo_stringency: "strict"

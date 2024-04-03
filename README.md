@@ -38,9 +38,9 @@ You can also use the light bakta database if using a suitable version of bakta:
 bakta_db download --output /path/to/database --type light
 ```
 
-Install [cgt](https://github.com/bacpop/cgt)
+Install [cgt](https://github.com/bacpop/cgt) (will install `cgt_bacpop` executable in `./bin` directory)
 ```
-cargo add cgt_bacpop
+cargo install cgt_bacpop --root .
 ```
 
 Or to build from source:
@@ -49,6 +49,24 @@ git clone https://github.com/bacpop/cgt.git
 cd cgt
 cargo install --path "."
 ```
+
+### Running inside a container
+
+An alternative, if you are having trouble with the above, is to use the CELEBRIMBOR docker
+container. If you are comfortable running commands inside docker containers and mounting
+your external files, the whole pipeline is in the container available by running:
+
+```
+docker pull samhorsfield96/celebrimbor:main
+```
+
+To run within the container, use the below command, replacing `path to output dir` and `path to fasta dir` with absolute paths and changing other parameters as required:
+
+```
+docker run -v <path to output dir>:/output -v <path to fasta dir>:/data samhorsfield96/celebrimbor:main snakemake --cores 4 --config genome_fasta=/data output_dir=/output bakta_db=bakta_db/db-light cgt_exe=cgt_bacpop cgt_breaks=0.05,0.95 cgt_error=0.05 clustering_method=panaroo panaroo_stringency=moderate
+```
+
+Note: ensure that `clustering_method` and `panaroo_stringency` parameters are not in quotes.
 
 ## Quick start:
 
