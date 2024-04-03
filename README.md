@@ -50,6 +50,15 @@ cd cgt
 cargo install --path "."
 ```
 
+### Running inside a container
+
+An alternative, if you are having trouble with the above, is to use the CELEBRIMBOR docker
+container. If you are comfortable running commands inside docker containers and mounting
+your external files, the whole pipeline is in the container available by running:
+```
+docker pull samhorsfield96/celebrimbor:main
+```
+
 ## Quick start:
 
 Update `config.yaml` to specify workflow and directory paths.
