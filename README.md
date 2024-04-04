@@ -1,5 +1,7 @@
 # CELEBRIMBOR <img src='celebrimbor_logo.png' align="right" height="250" />
 
+Core ELEment Bias Removal In Metagenome Binned ORthologs
+
 A pipeline written in Snakemake to automatically generate pangenomes from metagenome assembled genomes (MAGs).
 
 ## Dependencies:
@@ -78,6 +80,8 @@ Update `config.yaml` to specify workflow and directory paths.
 - `cgt_exe`: path to cgt executable.
 - `cgt_breaks`: frequency for rare/core gene cutoff, e.g. `0.1,0.9`, meaning genes predicted at `<0.1` frequency will be `rare`, `0.1<=x<0.9` will be `middle` and `>=0.9` will be `core`.
 - `cgt_error`: sets false assignment rate of gene to particular frequency compartment.
+- `clustering_method`: choice of either `mmseqs2` (for speed) or `panaroo` (for accuracy).
+- `panaroo_stringency`: Stringency of Panaroo quality control measures. One of `strict`, `moderate` or `sensitive`.
 
 Run snakemake (must be in same directory as `Snakemake` file):
 
@@ -90,10 +94,20 @@ snakemake --cores <cores>
 This workflow annotates genes in metagenome-assembled genomes (MAGs) and using a probabilistic model to assign each gene to a gene frequency compartment based on their respective frequencies and genome completeness.
 
 1. Predict genes in all FASTA files in given directory using [bakta](https://github.com/oschwengers/bakta)
-1. Cluster genes using [mmseqs2](https://github.com/soedinglab/MMseqs2) and generate a gene presence/absence matrix
+1. Cluster genes using [mmseqs2](https://github.com/soedinglab/MMseqs2) or [Panaroo](https://github.com/gtonkinhill/panaroo) and generate a gene presence/absence matrix
 1. Generate a pangenome summary of observed gene frequencies
 1. Calculate genome completeness using [CheckM](https://github.com/Ecogenomics/CheckM)
 1. Probabistically assign each gene family as `core|middle|rare` using [cgt](https://github.com/bacpop/cgt)
+
+## Citations
+
+When using CELEBRIMBOR, please cite:
+
+- [Bakta](https://www.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.000685#tab2)
+- [mmseqs2](https://www.nature.com/articles/nbt.3988)
+- [Panaroo](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-020-02090-4)
+- [CheckM](https://genome.cshlp.org/content/25/7/1043)
+
 
 
 
