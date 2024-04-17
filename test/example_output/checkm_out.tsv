@@ -1,0 +1,11 @@
+Bin_Id	Marker_lineage	genomes	markers	marker_sets	0	1	2	3	4	5+	Completeness	Contamination	Strain_heterogeneity
+11657_5_17.contigs_spades_comp_0.5948	f__Enterobacteriaceae_(UID5124)	134	1173	336	474	698	1	0	0	0	58.27	0.04	0.00
+11657_5_79.contigs_spades_comp_0.9079	f__Enterobacteriaceae_(UID5124)	134	1173	336	73	1099	1	0	0	0	91.93	0.04	0.00
+11658_4_24.contigs_spades_comp_0.877	f__Enterobacteriaceae_(UID5124)	134	1173	336	95	1073	5	0	0	0	87.12	0.39	0.00
+11679_4_5.contigs_spades_comp_0.9853	f__Enterobacteriaceae_(UID5124)	134	1173	336	20	1151	2	0	0	0	98.05	0.14	50.00
+11679_7_49.contigs_spades_comp_0.731	f__Enterobacteriaceae_(UID5124)	134	1173	336	295	873	5	0	0	0	69.61	0.12	0.00
+11679_8_27.contigs_spades_comp_0.8756	f__Enterobacteriaceae_(UID5124)	134	1173	336	89	1082	2	0	0	0	88.77	0.08	0.00
+11679_8_64.contigs_spades_comp_0.9555	f__Enterobacteriaceae_(UID5124)	134	1173	336	46	1122	5	0	0	0	95.95	0.39	0.00
+11679_8_82.contigs_spades_comp_0.7923	f__Enterobacteriaceae_(UID5124)	134	1173	336	234	935	4	0	0	0	79.13	0.35	0.00
+11791_3_21.contigs_spades_comp_0.9638	f__Enterobacteriaceae_(UID5124)	134	1173	336	37	1134	2	0	0	0	96.99	0.08	0.00
+11791_7_13.contigs_spades_comp_0.9154	f__Enterobacteriaceae_(UID5124)	134	1173	336	90	1076	7	0	0	0	92.53	0.69	0.00
