@@ -92,12 +92,12 @@ snakemake --cores <cores>
 To test running of the workflow, download this repository, replace `path/to` with actual paths, and run:
 
 ```
-snakemake --cores 1 --config genome_fasta=test/fasta output_dir=test bakta_db=path/to/bakta_db/db-light cgt_exe=path/to/cgt_bacpop cgt_breaks=0.05,0.95 cgt_error=0.05 clustering_method=panaroo panaroo_stringency=moderate
+snakemake --cores 1 --config genome_fasta=test/fasta output_dir=test_output bakta_db=path/to/bakta_db/db-light cgt_exe=path/to/cgt_bacpop cgt_breaks=0.05,0.95 cgt_error=0.05 clustering_method=panaroo panaroo_stringency=moderate
 ```
 
 This test directory contains MAGs from [MGnify](https://academic.oup.com/nar/article/51/D1/D753/6880769).
 
-The output directory `test` will contain:
+The output directory `test_output` will contain:
 
 - `annotated` directory, containing gene annotations from [bakta](https://github.com/oschwengers/bakta).
 - `mmseqs2` or `panaroo` directory, containing gene clusters from [mmseqs2](https://github.com/soedinglab/MMseqs2) or [Panaroo](https://github.com/gtonkinhill/panaroo) respectively.
