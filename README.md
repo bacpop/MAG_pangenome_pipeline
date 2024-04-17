@@ -22,8 +22,8 @@ A pipeline written in Snakemake to automatically generate pangenomes from metage
 Install the required packages using [conda](https://conda.io/projects/conda/en/latest/user-guide/install/index.html)/[mamba](https://github.com/mamba-org/mamba):
 
 ```
-git clone https://github.com/bacpop/MAG_pangenome_pipeline.git
-cd MAG_pangenome_pipeline
+git clone git@github.com:bacpop/CELEBRIMBOR.git
+cd CELEBRIMBOR
 mamba env create -f environment.yml
 mamba activate celebrimbor
 ```
