@@ -7,7 +7,7 @@ A pipeline written in Snakemake to automatically generate pangenomes from metage
 ## Dependencies:
 
 * Snakemake
-* mmseqs2
+* MMseqs2
 * Bakta
 * Biopython
 * CheckM
@@ -87,6 +87,12 @@ Run snakemake (must be in same directory as `Snakemake` file):
 
 ```
 snakemake --cores <cores>
+```
+
+To test running of the workflow, download this repository, replace `path/to` with actual paths, and run:
+
+```
+snakemake --cores 1 --config genome_fasta=test/fasta output_dir=test bakta_db=path/to/bakta_db/db-light cgt_exe=path/to/cgt_bacpop cgt_breaks=0.05,0.95 cgt_error=0.05 clustering_method=panaroo panaroo_stringency=moderate
 ```
 
 ## Overview of workflow
