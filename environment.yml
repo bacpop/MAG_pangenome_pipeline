@@ -1,15 +1,16 @@
-name: celebrimbor
+name: celebrimbor2
 channels:
   - conda-forge
   - bioconda
   - defaults
 dependencies:
-  - python>=3.9
+  - python>=3.8
   - bakta
   - mmseqs2
   - pandas
   - biopython
   - checkm-genome
+  - checkm2
   - snakemake
   - panaroo
   - rust

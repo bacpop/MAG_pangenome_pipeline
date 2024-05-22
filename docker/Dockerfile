@@ -69,6 +69,7 @@ RUN conda update --name base --channel defaults conda && \
     cargo install cgt_bacpop && \
     mkdir bakta_db && \ 
     bakta_db download --output bakta_db --type light && \
+    checkm2 database --download --path checkm2_db && \
     conda deactivate
 
 # add rust binary to path

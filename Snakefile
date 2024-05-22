@@ -70,7 +70,7 @@ if config['clustering_method'] in ["mmseqs2"]:
             all_seqs = f"{config['output_dir']}/mmseqs/mmseqs_all_seqs.fasta",
             clusters = f"{config['output_dir']}/mmseqs/mmseqs_cluster.tsv",
             rep_seq = f"{config['output_dir']}/mmseqs/mmseqs_rep_seq.fasta"
-        threads: 16
+        threads: 1
         resources:
             mem_mb=lambda wildcards, attempt: 16000 * attempt
         log:
@@ -158,7 +158,7 @@ elif config['clustering_method'] in ["panaroo"]:
             summary_stats = f"{config['output_dir']}/panaroo/summary_statistics.txt",
             rtab = f"{config['output_dir']}/panaroo/gene_presence_absence.Rtab",
             matrix = f"{config['output_dir']}/presence_absence_matrix.txt"
-        threads: 16
+        threads: 1
         resources:
             mem_mb=lambda wildcards, attempt: 16000 * attempt
         params:
@@ -201,21 +201,36 @@ rule fix_faa_file:
             "celebrimbor"
         script: "scripts/fix_faa_files.py"
 
-rule run_checkm:
-    input:
-        fixed_annotations = f"{config['output_dir']}/all_faa"
-    output:
-        workdir = directory(f"{config['output_dir']}/checkm_out"),
-        checkm_file = f"{config['output_dir']}/checkm_out.tsv"
-    threads: 16
-    resources:
-        mem_mb=lambda wildcards, attempt: 16000 * attempt
-    shell:
+if config['checkm_method'] in ["checkm1"]:
+    rule run_checkm1:
+        input:
+            fixed_annotations = f"{config['output_dir']}/all_faa"
+        output:
+            workdir = directory(f"{config['output_dir']}/checkm1_out"),
+            checkm_file = f"{config['output_dir']}/checkm_out.tsv"
+        threads: 1
+        resources:
+            mem_mb=lambda wildcards, attempt: 16000 * attempt
+        shell:
+            """
+            checkm lineage_wf -q --genes -t {threads} -x faa --tab_table -f {output.checkm_file} {input.fixed_annotations} {output.workdir}
+            sed 's/# //g' -i {output.checkm_file}
+            sed 's/ /_/g' -i {output.checkm_file}
         """
-        checkm lineage_wf -q --genes -t {threads} -x faa --tab_table -f {output.checkm_file} {input.fixed_annotations} {output.workdir}
-        sed 's/# //g' -i {output.checkm_file}
-        sed 's/ /_/g' -i {output.checkm_file}
-	"""
+
+elif config['checkm_method'] in ["checkm2"]:
+    rule run_checkm2:
+        input:
+            fixed_annotations = directory(f"{config['output_dir']}/all_faa")
+        output:
+            workdir = directory(f"{config['output_dir']}/checkm2_out")
+        params:
+            DB = directory(f"{config['checkm2_db']}")
+        threads: 1
+        shell:
+            """
+            checkm2 predict --threads {threads} --genes -x .faa --database_path {params.DB} --input {input.fixed_annotations} --output-directory {output.workdir}
+        """
 
 # cgt analysis
 rule run_cgt:
