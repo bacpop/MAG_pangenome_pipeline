@@ -8,7 +8,7 @@ genome_fasta: /path/to/genome/fasta/dir
 bakta_db: path/to/bakta/db/dir
 
 # path to checkm2 db
-checkm2_db: path/to/checkm2/db/dir
+checkm2_db: path/to/checkm2/db.dmnd
 
 # cgt executable parameters
 cgt_exe: /path/to/cgt/exe

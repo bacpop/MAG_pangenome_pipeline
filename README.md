@@ -40,6 +40,12 @@ You can also use the light bakta database if using a suitable version of bakta:
 bakta_db download --output /path/to/database --type light
 ```
 
+Download the required checkm2 database file:
+
+```
+checkm2 database download --path /path/to/database
+```
+
 Install [cgt](https://github.com/bacpop/cgt) (will install `cgt_bacpop` executable in `./bin` directory)
 ```
 cargo install cgt_bacpop --root .
@@ -65,10 +71,10 @@ docker pull samhorsfield96/celebrimbor:main
 To run within the container, use the below command, replacing `path to output dir` and `path to fasta dir` with absolute paths and changing other parameters as required:
 
 ```
-docker run -v <path to output dir>:/output -v <path to fasta dir>:/data samhorsfield96/celebrimbor:main snakemake --cores 4 --config genome_fasta=/data output_dir=/output bakta_db=bakta_db/db-light cgt_exe=cgt_bacpop cgt_breaks=0.05,0.95 cgt_error=0.05 clustering_method=panaroo panaroo_stringency=moderate
+docker run -v <path to output dir>:/output -v <path to fasta dir>:/data samhorsfield96/celebrimbor:main snakemake --cores 4 --config genome_fasta=/data output_dir=/output bakta_db=bakta_db/db-light checkm2_db=checkm2_db/CheckM2_database/uniref100.KO.1.dmnd cgt_exe=cgt_bacpop cgt_breaks=0.05,0.95 cgt_error=0.05 clustering_method=panaroo panaroo_stringency=moderate checkm_method=checkm2
 ```
 
-Note: ensure that `clustering_method` and `panaroo_stringency` parameters are not in quotes.
+Note: ensure that `clustering_method`, `panaroo_stringency` and `checkm_method` parameters are not in quotes.
 
 ## Quick start:
 
