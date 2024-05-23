@@ -23,7 +23,7 @@ rule bakta:
     output:
         ann_dir = directory(f"{config['output_dir']}/annotated/{{sample}}_ann")
     conda:
-        "celebrimbor"
+        "environment.yml"
     threads: 1
     params:
         DB = directory(f"{config['bakta_db']}")
@@ -49,8 +49,8 @@ if config['clustering_method'] in ["mmseqs2"]:
             annotations = expand(f"{config['output_dir']}/annotated/{{sample}}_ann", sample=get_samples(config['genome_fasta']))
         output:
             fixed_annotations = directory(f"{config['output_dir']}/all_ffn")
-        conda: #just needs biopython
-            "celebrimbor"
+        conda:
+            "environment.yml"
         script: "scripts/fix_ffn_files.py"
 
     rule concat:
@@ -78,7 +78,7 @@ if config['clustering_method'] in ["mmseqs2"]:
             output_prefix = f"{config['output_dir']}/mmseqs/mmseqs",
             tmp_dir = f"{config['output_dir']}/mmseqs/tmp"
         conda:
-            "celebrimbor"
+            "environment.yml"
         shell:
             "mmseqs easy-cluster {input} {params.output_prefix} {params.tmp_dir} --min-seq-id {params.seq_id} \
             --cov-mode {params.cov_mode} -c {params.c} --threads {threads} >{log} 2>&1"
@@ -106,8 +106,7 @@ if config['clustering_method'] in ["mmseqs2"]:
             matrix = f"{config['output_dir']}/presence_absence_matrix.txt"
         threads: 1
         conda:
-            # env has biopython and pandas
-            "celebrimbor"
+            "environment.yml"
         script: "scripts/make_presence_absence_matrix.py"
 
     rule summarise_pangenome_mmseqs:
@@ -121,8 +120,7 @@ if config['clustering_method'] in ["mmseqs2"]:
         params:
             breaks = config['cgt_breaks']
         conda:
-            # env has biopython and pandas
-            "celebrimbor"
+            "environment.yml"
         shell:
             """
             grep ">" {input.rep_seq} > {output.gene_descriptions}
@@ -137,13 +135,13 @@ elif config['clustering_method'] in ["panaroo"]:
             outputdir = directory(f"{config['output_dir']}/all_gff")
         params:
             file_ext = "gff3"
-        conda: #just needs biopython
-            "celebrimbor"
+        conda:
+            "environment.yml"
         script: "scripts/create_symlink.py"
 
     rule panaroo:
         input:
-            directory(f"{config['output_dir']}/all_gff")
+            f"{config['output_dir']}/all_gff"
         output:
             summary_stats = f"{config['output_dir']}/panaroo/summary_statistics.txt",
             rtab = f"{config['output_dir']}/panaroo/gene_presence_absence.Rtab",
@@ -153,7 +151,7 @@ elif config['clustering_method'] in ["panaroo"]:
             stringency = config['panaroo_stringency'],
             outdir = f"{config['output_dir']}/panaroo"
         conda:
-            "celebrimbor"
+            "environment.yml"
         shell:
             """
             panaroo -i {input}/*.gff3 -o {params.outdir} --clean-mode {params.stringency} --remove-invalid-genes -t {threads}
@@ -169,8 +167,7 @@ elif config['clustering_method'] in ["panaroo"]:
         params:
             breaks = config['cgt_breaks']
         conda:
-            # env has biopython and pandas
-            "celebrimbor"
+            "environment.yml"
         shell:
             """
             python scripts/summarise_pangenome_panaroo.py {params.breaks} {input.matrix} {output.summary_file}
@@ -183,8 +180,8 @@ rule fix_faa_file:
             annotations = expand(f"{config['output_dir']}/annotated/{{sample}}_ann", sample=get_samples(config['genome_fasta']))
         output:
             fixed_annotations = directory(f"{config['output_dir']}/all_faa")
-        conda: #just needs biopython
-            "celebrimbor"
+        conda:
+            "environment.yml"
         script: "scripts/fix_faa_files.py"
 
 if config['checkm_method'] in ["checkm1"]:
@@ -196,6 +193,8 @@ if config['checkm_method'] in ["checkm1"]:
             workdir = directory(f"{config['output_dir']}/checkm1_out"),
             checkm_file = f"{config['output_dir']}/checkm_out.tsv"
         threads: 1
+        conda:
+            "environment.yml"
         shell:
             """
             checkm lineage_wf -q --genes -t {threads} -x faa --tab_table -f {output.checkm_file} {input.fixed_annotations} {output.workdir}
@@ -207,7 +206,7 @@ elif config['checkm_method'] in ["checkm2"]:
     completeness_column = 2
     rule run_checkm2:
         input:
-            fixed_annotations = directory(f"{config['output_dir']}/all_faa")
+            fixed_annotations = f"{config['output_dir']}/all_faa"
         output:
             workdir = directory(f"{config['output_dir']}/checkm2_out"),
             checkm_file = f"{config['output_dir']}/checkm2_out/quality_report.tsv",
@@ -215,11 +214,13 @@ elif config['checkm_method'] in ["checkm2"]:
         params:
             DB = directory(f"{config['checkm2_db']}")
         threads: 1
+        conda:
+            "environment_checkm2.yml"
         shell:
             """
             checkm2 predict --threads {threads} --force --genes -x .faa --database_path {params.DB} --input {input.fixed_annotations} --output-directory {output.workdir}
             cp {output.checkm_file} {output.outfile}
-            """
+        """
 
 # cgt analysis
 rule run_cgt:
@@ -233,6 +234,8 @@ rule run_cgt:
         exe = f"{config['cgt_exe']}",
         breaks = f"{config['cgt_breaks']}",
         error = f"{config['cgt_error']}"
+    conda:
+        "environment.yml"
     shell:
         """
         {params.exe} --completeness-column {completeness_column} --breaks {params.breaks} --error {params.error} --output-file {output.cgt_output} {input.checkm_file} {input.matrix}
