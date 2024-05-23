@@ -68,7 +68,7 @@ if config['clustering_method'] in ["mmseqs2"]:
             all_seqs = f"{config['output_dir']}/mmseqs/mmseqs_all_seqs.fasta",
             clusters = f"{config['output_dir']}/mmseqs/mmseqs_cluster.tsv",
             rep_seq = f"{config['output_dir']}/mmseqs/mmseqs_rep_seq.fasta"
-        threads: 1
+        threads: 64
         log:
             f"{config['output_dir']}/logs/mmseqs2.log"
         params:
@@ -146,7 +146,7 @@ elif config['clustering_method'] in ["panaroo"]:
             summary_stats = f"{config['output_dir']}/panaroo/summary_statistics.txt",
             rtab = f"{config['output_dir']}/panaroo/gene_presence_absence.Rtab",
             matrix = f"{config['output_dir']}/presence_absence_matrix.txt"
-        threads: 1
+        threads: 64
         params:
             stringency = config['panaroo_stringency'],
             outdir = f"{config['output_dir']}/panaroo"
@@ -192,7 +192,7 @@ if config['checkm_method'] in ["checkm1"]:
         output:
             workdir = directory(f"{config['output_dir']}/checkm1_out"),
             checkm_file = f"{config['output_dir']}/checkm_out.tsv"
-        threads: 1
+        threads: 64
         conda:
             "environment.yml"
         shell:
@@ -210,10 +210,10 @@ elif config['checkm_method'] in ["checkm2"]:
         output:
             workdir = directory(f"{config['output_dir']}/checkm2_out"),
             checkm_file = f"{config['output_dir']}/checkm2_out/quality_report.tsv",
-            outfile = directory(f"{config['output_dir']}/checkm_out.tsv")
+            outfile = f"{config['output_dir']}/checkm_out.tsv"
         params:
             DB = directory(f"{config['checkm2_db']}")
-        threads: 1
+        threads: 64
         conda:
             "environment_checkm2.yml"
         shell:
