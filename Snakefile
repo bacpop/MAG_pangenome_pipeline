@@ -24,14 +24,13 @@ rule bakta:
         ann_dir = directory(f"{config['output_dir']}/annotated/{{sample}}_ann")
     conda:
         "environment.yml"
-    threads: 1
     params:
         DB = directory(f"{config['bakta_db']}")
     log:
         f"{config['output_dir']}/logs/bakta/{{sample}}.log"
     shell:
         """
-        bakta {input.genome} --db {params.DB} --prefix {wildcards.sample} --translation-table 11 --skip-plot --skip-trna --skip-tmrna --skip-rrna --skip-ncrna --skip-ncrna-region --skip-crispr --skip-ori --threads {threads} --output {output.ann_dir} >{log} 2>&1
+        bakta {input.genome} --db {params.DB} --prefix {wildcards.sample} --translation-table 11 --skip-plot --skip-trna --skip-tmrna --skip-rrna --skip-ncrna --skip-ncrna-region --skip-crispr --skip-ori --threads 1 --output {output.ann_dir} >{log} 2>&1
         """
 
 def get_samples(genome_dir):

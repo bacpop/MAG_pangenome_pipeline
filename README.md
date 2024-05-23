@@ -108,7 +108,7 @@ snakemake --cores <cores>
 To test running of the workflow, download this repository, replace `path/to` with actual paths, and run:
 
 ```
-snakemake --cores 1 --config genome_fasta=test/fasta output_dir=test_output bakta_db=path/to/bakta_db/db-light cgt_exe=path/to/cgt_bacpop cgt_breaks=0.05,0.95 cgt_error=0.05 clustering_method=panaroo panaroo_stringency=moderate
+snakemake --cores 1 --config genome_fasta=test/fasta output_dir=test_output bakta_db=path/to/bakta_db/db-light cgt_exe=path/to/cgt_bacpop cgt_breaks=0.05,0.95 cgt_error=0.05 clustering_method=panaroo panaroo_stringency=moderate checkm_method=checkm2 checkm2_db=path/to/CheckM2_database/uniref100.KO.1.dmnd 
 ```
 
 This test directory contains simulated MAGs from [Kallonen et al.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5538559/).
