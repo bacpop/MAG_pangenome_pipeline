@@ -61,16 +61,16 @@ COPY . $PROJECT_DIR
 WORKDIR $PROJECT_DIR
 
 # build the conda environment
-ENV ENV_PREFIX $PROJECT_DIR/env
+ENV ENV_PREFIX $PROJECT_DIR
 RUN conda update --name base --channel defaults conda && \
-    conda env create --prefix $ENV_PREFIX --file /tmp/environment.yml --yes && \
+    conda env create --prefix $ENV_PREFIX/celebrimbor --file /tmp/environment.yml --yes && \
     conda clean --all --yes && \
     conda activate $ENV_PREFIX/celebrimbor && \
     cargo install cgt_bacpop && \
     mkdir bakta_db && \ 
     bakta_db download --output bakta_db --type light && \
     conda deactivate && \
-    conda env create --prefix $ENV_PREFIX --file /tmp/environment_checkm2.yml && \
+    conda env create --prefix $ENV_PREFIX/checkm2 --file /tmp/environment_checkm2.yml --yes && \
     conda activate $ENV_PREFIX/checkm2 && \
     checkm2 database --download --path checkm2_db && \
     conda deactivate
