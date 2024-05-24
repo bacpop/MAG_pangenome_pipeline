@@ -28,6 +28,8 @@ RUN adduser --disabled-password \
 
 COPY environment.yml /tmp/
 RUN chown $UID:$GID /tmp/environment.yml
+COPY environment_checkm2.yml /tmp/
+RUN chown $UID:$GID /tmp/environment_checkm2.yml
 
 COPY docker/entrypoint.sh /usr/local/bin/
 RUN chown $UID:$GID /usr/local/bin/entrypoint.sh && \
